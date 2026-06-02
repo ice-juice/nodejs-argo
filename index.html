@@ -1,966 +1,1539 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodeFlow | Visual Development Platform</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Roboto', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f9fbfd;
-        }
-        
-        h1, h2, h3, h4 {
-            font-family: 'Poppins', sans-serif;
-            font-weight: 600;
-            line-height: 1.3;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header & Navigation */
-        header {
-            background-color: #fff;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-icon {
-            color: #4361ee;
-            font-size: 28px;
-            margin-right: 10px;
-        }
-        
-        .logo-text {
-            font-family: 'Poppins', sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #333;
-        }
-        
-        .logo-text span {
-            color: #4361ee;
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: #555;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        .nav-links a:hover {
-            color: #4361ee;
-        }
-        
-        .cta-button {
-            background-color: #4361ee;
-            color: white;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
-        
-        .cta-button:hover {
-            background-color: #3a56d4;
-            transform: translateY(-2px);
-        }
-        
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #333;
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 150px 0 100px;
-            background: linear-gradient(135deg, #f0f4ff 0%, #f9fbfd 100%);
-        }
-        
-        .hero-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .hero-text {
-            flex: 1;
-            padding-right: 40px;
-        }
-        
-        .hero-text h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-            color: #222;
-        }
-        
-        .hero-text h1 span {
-            color: #4361ee;
-        }
-        
-        .hero-text p {
-            font-size: 18px;
-            color: #666;
-            margin-bottom: 30px;
-            max-width: 600px;
-        }
-        
-        .hero-buttons {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .secondary-button {
-            background-color: white;
-            color: #4361ee;
-            border: 2px solid #4361ee;
-            padding: 12px 28px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .secondary-button:hover {
-            background-color: #f0f4ff;
-        }
-        
-        .hero-image {
-            flex: 1;
-            text-align: center;
-        }
-        
-        .hero-image img {
-            max-width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 20px 40px rgba(67, 97, 238, 0.15);
-        }
-        
-        /* Features Section */
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: #222;
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .features {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
-        }
-        
-        .feature-card {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            background-color: #eef2ff;
-            color: #4361ee;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            font-size: 28px;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .feature-card p {
-            color: #666;
-        }
-        
-        /* Benefits Section */
-        .benefits {
-            padding: 100px 0;
-            background-color: #f0f4ff;
-        }
-        
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 30px;
-        }
-        
-        .benefit-item {
-            text-align: center;
-            padding: 30px 20px;
-        }
-        
-        .benefit-icon {
-            color: #4361ee;
-            font-size: 40px;
-            margin-bottom: 20px;
-        }
-        
-        .benefit-item h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        .benefit-item p {
-            color: #666;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            padding: 100px 0;
-            background-color: white;
-        }
-        
-        .testimonial-slider {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
-        
-        .testimonial {
-            background: #f9fbfd;
-            padding: 40px;
-            border-radius: 10px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-        
-        .testimonial-text {
-            font-size: 18px;
-            font-style: italic;
-            margin-bottom: 30px;
-            color: #555;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .author-avatar {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #ddd;
-            margin-right: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: #4361ee;
-            font-size: 24px;
-        }
-        
-        .author-info h4 {
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
-        
-        .author-info p {
-            color: #777;
-            font-size: 14px;
-        }
-        
-        /* Pricing Section */
-        .pricing {
-            padding: 100px 0;
-            background-color: #f9fbfd;
-        }
-        
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .pricing-card {
-            background: white;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-        
-        .pricing-card.featured {
-            border-top: 5px solid #4361ee;
-            transform: scale(1.05);
-            position: relative;
-        }
-        
-        .featured-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4361ee;
-            color: white;
-            padding: 5px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .pricing-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .pricing-card.featured:hover {
-            transform: scale(1.05) translateY(-10px);
-        }
-        
-        .plan-name {
-            font-size: 24px;
-            margin-bottom: 15px;
-            color: #333;
-        }
-        
-        .plan-price {
-            font-size: 48px;
-            font-weight: 700;
-            color: #4361ee;
-            margin-bottom: 20px;
-        }
-        
-        .plan-price span {
-            font-size: 16px;
-            color: #777;
-        }
-        
-        .plan-features {
-            list-style: none;
-            margin-bottom: 30px;
-        }
-        
-        .plan-features li {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
-            color: #555;
-        }
-        
-        .plan-features li:last-child {
-            border-bottom: none;
-        }
-        
-        /* CTA Section */
-        .cta-section {
-            padding: 100px 0;
-            background: linear-gradient(135deg, #4361ee 0%, #3a56d4 100%);
-            text-align: center;
-            color: white;
-        }
-        
-        .cta-section h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .cta-section p {
-            font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 30px;
-            opacity: 0.9;
-        }
-        
-        .cta-section .cta-button {
-            background-color: white;
-            color: #4361ee;
-            font-size: 16px;
-            padding: 15px 40px;
-        }
-        
-        .cta-section .cta-button:hover {
-            background-color: #f0f4ff;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: #222;
-            color: #ccc;
-            padding: 70px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 50px;
-        }
-        
-        .footer-column h3 {
-            font-size: 20px;
-            color: white;
-            margin-bottom: 25px;
-        }
-        
-        .footer-links {
-            list-style: none;
-        }
-        
-        .footer-links li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-links a {
-            color: #aaa;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-links a:hover {
-            color: #4361ee;
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid #444;
-            font-size: 14px;
-            color: #888;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 992px) {
-            .hero-content {
-                flex-direction: column;
-            }
-            
-            .hero-text {
-                padding-right: 0;
-                margin-bottom: 50px;
-                text-align: center;
-            }
-            
-            .hero-text p {
-                margin: 0 auto 30px;
-            }
-            
-            .pricing-card.featured {
-                transform: none;
-            }
-            
-            .pricing-card.featured:hover {
-                transform: translateY(-10px);
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero-text h1 {
-                font-size: 36px;
-            }
-            
-            .section-title h2 {
-                font-size: 30px;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .hero-buttons button {
-                width: 100%;
-                max-width: 300px;
-            }
-        }
-        
-        @media (max-width: 576px) {
-            .hero {
-                padding: 130px 0 80px;
-            }
-            
-            .features, .benefits, .testimonials, .pricing, .cta-section {
-                padding: 70px 0;
-            }
-            
-            .feature-card, .testimonial {
-                padding: 25px;
-            }
-            
-            .plan-price {
-                font-size: 36px;
-            }
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GitHub 多账号长期稳定使用指南 | SSH Identity Routing</title>
+  <meta name="description" content="一篇面向 Windows、macOS、Linux 的 GitHub 多账号 SSH 配置技术博客，覆盖 Host 别名、独立密钥、提交身份、排错与最小清单。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2305070b'/%3E%3Cpath d='M14 35h16m4 0h16M20 25h24M24 45h16' stroke='%232dd4bf' stroke-width='5' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='25' r='4' fill='%23f4b740'/%3E%3Ccircle cx='48' cy='45' r='4' fill='%23ff6b5f'/%3E%3C/svg%3E">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #05070b;
+      --bg-2: #090d12;
+      --panel: rgba(15, 20, 28, .88);
+      --panel-2: rgba(20, 26, 36, .72);
+      --ink: #edf7f6;
+      --muted: #9fb2bd;
+      --dim: #70818d;
+      --line: rgba(143, 167, 180, .2);
+      --line-strong: rgba(45, 212, 191, .38);
+      --teal: #2dd4bf;
+      --green: #47e28f;
+      --amber: #f4b740;
+      --coral: #ff6b5f;
+      --violet: #a78bfa;
+      --code: #0b0f15;
+      --code-line: #192331;
+      --shadow: 0 24px 70px rgba(0, 0, 0, .48);
+      --radius: 8px;
+      --sans: "Inter", "Segoe UI", "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Cascadia Code", Menlo, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(0deg, rgba(255,255,255,.028) 1px, transparent 1px) 0 0 / 40px 40px,
+        linear-gradient(180deg, #05070b 0%, #090d12 44%, #05070b 100%);
+      line-height: 1.72;
+      letter-spacing: 0;
+      min-width: 320px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(45, 212, 191, .08), transparent 18%),
+        linear-gradient(0deg, rgba(244, 183, 64, .055), transparent 20%);
+      mix-blend-mode: screen;
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      width: 100%;
+      height: 3px;
+      background: transparent;
+    }
+
+    .progress span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), var(--amber), var(--coral));
+      box-shadow: 0 0 18px rgba(45, 212, 191, .9);
+    }
+
+    .topbar {
+      position: fixed;
+      top: 3px;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(5, 7, 11, .74);
+      backdrop-filter: blur(16px);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 32px));
+      min-height: 64px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: max-content;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(45, 212, 191, .55);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      color: var(--teal);
+      background: linear-gradient(135deg, rgba(45, 212, 191, .16), rgba(244, 183, 64, .11));
+      box-shadow: inset 0 0 18px rgba(45, 212, 191, .16);
+      font-family: var(--mono);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav-links a {
+      padding: 7px 11px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: nowrap;
+      transition: color .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--ink);
+      border-color: rgba(45, 212, 191, .34);
+      background: rgba(45, 212, 191, .09);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 82svh;
+      padding: 118px 0 72px;
+      display: flex;
+      align-items: end;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(5, 7, 11, .95) 0%, rgba(5, 7, 11, .78) 38%, rgba(5, 7, 11, .42) 70%, rgba(5, 7, 11, .86) 100%),
+        linear-gradient(0deg, rgba(5, 7, 11, .95) 0%, rgba(5, 7, 11, .08) 40%);
+      z-index: 1;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 120px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(45, 212, 191, .14) 0,
+        rgba(45, 212, 191, .14) 1px,
+        transparent 1px,
+        transparent 34px
+      );
+      opacity: .35;
+      z-index: 1;
+    }
+
+    .hero-media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: .86;
+      filter: saturate(1.08) contrast(1.04);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      display: grid;
+      gap: 28px;
+    }
+
+    .kicker {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 18px;
+      color: var(--teal);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .kicker span {
+      padding: 6px 9px;
+      border: 1px solid rgba(45, 212, 191, .34);
+      border-radius: 999px;
+      background: rgba(2, 8, 10, .58);
+    }
+
+    h1 {
+      width: min(880px, 100%);
+      margin: 0;
+      color: #f8fffd;
+      font-size: clamp(38px, 7vw, 82px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      text-wrap: balance;
+    }
+
+    .hero-lead {
+      width: min(760px, 100%);
+      margin: 20px 0 0;
+      color: #c9d7d8;
+      font-size: clamp(17px, 2vw, 22px);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .button {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: var(--radius);
+      color: var(--ink);
+      background: rgba(255, 255, 255, .09);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .24);
+      cursor: pointer;
+      font: 700 14px/1 var(--sans);
+      transition: transform .2s ease, border-color .2s ease, background .2s ease;
+    }
+
+    .button.primary {
+      border-color: rgba(45, 212, 191, .62);
+      background: linear-gradient(135deg, rgba(45, 212, 191, .96), rgba(71, 226, 143, .9));
+      color: #04100f;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(244, 183, 64, .62);
+    }
+
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      width: min(720px, 100%);
+      margin-top: 28px;
+    }
+
+    .metric {
+      min-height: 98px;
+      padding: 14px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: var(--radius);
+      background: rgba(4, 7, 11, .6);
+      backdrop-filter: blur(10px);
+    }
+
+    .metric strong {
+      display: block;
+      color: var(--amber);
+      font-size: 26px;
+      line-height: 1.1;
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .shell-strip {
+      width: min(940px, 100%);
+      border: 1px solid rgba(45, 212, 191, .28);
+      border-radius: var(--radius);
+      background: rgba(8, 11, 17, .82);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .shell-head {
+      height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--coral);
+    }
+
+    .dot:nth-child(2) {
+      background: var(--amber);
+    }
+
+    .dot:nth-child(3) {
+      background: var(--green);
+    }
+
+    .shell-line {
+      margin: 0;
+      padding: 15px 16px;
+      overflow-x: auto;
+      color: #d8fff6;
+      font: 14px/1.55 var(--mono);
+      white-space: pre;
+    }
+
+    .shell-line::before {
+      display: none;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 235px minmax(0, 1fr);
+      gap: 42px;
+      padding: 40px 0 80px;
+    }
+
+    .side {
+      position: sticky;
+      top: 86px;
+      align-self: start;
+      display: grid;
+      gap: 16px;
+    }
+
+    .toc,
+    .quick-copy {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(12, 17, 24, .68);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 46px rgba(0, 0, 0, .22);
+    }
+
+    .toc {
+      padding: 14px;
+    }
+
+    .toc-title,
+    .copy-title {
+      margin: 0 0 10px;
+      color: var(--dim);
+      font: 700 12px/1.2 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .toc a {
+      display: block;
+      padding: 8px 8px;
+      border-left: 2px solid transparent;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .toc a:hover,
+    .toc a.active {
+      color: var(--ink);
+      border-left-color: var(--teal);
+      background: rgba(45, 212, 191, .07);
+    }
+
+    .quick-copy {
+      padding: 14px;
+    }
+
+    .quick-copy p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .article-section {
+      margin: 0 0 34px;
+      padding: 32px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(16, 22, 31, .8), rgba(9, 13, 18, .72));
+      box-shadow: 0 28px 70px rgba(0, 0, 0, .28);
+      scroll-margin-top: 90px;
+    }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      color: var(--amber);
+      font: 800 12px/1 var(--mono);
+      text-transform: uppercase;
+    }
+
+    .section-label::before {
+      content: "";
+      width: 22px;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      color: #f3fbff;
+      font-size: clamp(25px, 3vw, 38px);
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 26px 0 10px;
+      color: #e8ffff;
+      font-size: 20px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin: 10px 0;
+      color: #c5d4dc;
+    }
+
+    .lead {
+      width: min(760px, 100%);
+      color: #d8e7eb;
+      font-size: 18px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .note,
+    .principle,
+    .trouble,
+    .step,
+    .mini-card {
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .035);
+    }
+
+    .note {
+      margin: 18px 0;
+      padding: 17px 18px;
+      border-color: rgba(45, 212, 191, .32);
+      background: rgba(45, 212, 191, .08);
+    }
+
+    .principle,
+    .trouble,
+    .step,
+    .mini-card {
+      padding: 16px;
+    }
+
+    .principle b,
+    .trouble b,
+    .step b,
+    .mini-card b {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .principle span,
+    .trouble span,
+    .step span,
+    .mini-card span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .routing {
+      margin: 22px 0 6px;
+      border: 1px solid rgba(45, 212, 191, .25);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(90deg, rgba(45, 212, 191, .06), transparent),
+        rgba(3, 8, 12, .66);
+      overflow: hidden;
+    }
+
+    .routing-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 13px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+      color: var(--muted);
+      font: 12px/1.2 var(--mono);
+    }
+
+    .routing-map {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr) 60px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 18px;
+    }
+
+    .node {
+      min-height: 120px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, .045);
+    }
+
+    .node .tag {
+      color: var(--teal);
+      font: 12px/1.1 var(--mono);
+    }
+
+    .node strong {
+      display: block;
+      margin: 8px 0 6px;
+      color: #f8fffd;
+      font-size: 18px;
+    }
+
+    .node code {
+      display: inline-block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .arrow {
+      height: 1px;
+      position: relative;
+      background: linear-gradient(90deg, transparent, var(--teal));
+    }
+
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -4px;
+      width: 9px;
+      height: 9px;
+      border-top: 1px solid var(--teal);
+      border-right: 1px solid var(--teal);
+      transform: rotate(45deg);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 4px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+
+    th,
+    td {
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+      color: #cfdee5;
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+
+    th {
+      color: var(--amber);
+      background: rgba(244, 183, 64, .08);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    code {
+      color: #dffff6;
+      font-family: var(--mono);
+      font-size: .92em;
+      background: rgba(45, 212, 191, .09);
+      border: 1px solid rgba(45, 212, 191, .18);
+      border-radius: 5px;
+      padding: 2px 5px;
+    }
+
+    pre {
+      position: relative;
+      margin: 14px 0 20px;
+      border: 1px solid rgba(45, 212, 191, .22);
+      border-radius: var(--radius);
+      background: var(--code);
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+    }
+
+    pre::before {
+      content: attr(data-lang);
+      display: block;
+      height: 34px;
+      padding: 9px 14px 0;
+      color: var(--dim);
+      border-bottom: 1px solid rgba(255, 255, 255, .07);
+      background: linear-gradient(90deg, rgba(45, 212, 191, .08), rgba(244, 183, 64, .05));
+      font: 700 11px/1 var(--mono);
+      text-transform: uppercase;
+    }
+
+    pre code {
+      display: block;
+      min-width: 100%;
+      padding: 16px;
+      overflow-x: auto;
+      color: #d6f7ff;
+      background:
+        linear-gradient(var(--code-line) 1px, transparent 1px) 0 0 / 100% 32px,
+        transparent;
+      border: 0;
+      border-radius: 0;
+      font: 13px/1.65 var(--mono);
+      white-space: pre;
+    }
+
+    .copy-code {
+      position: absolute;
+      top: 7px;
+      right: 8px;
+      z-index: 2;
+      border: 1px solid rgba(255, 255, 255, .13);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, .07);
+      color: var(--muted);
+      cursor: pointer;
+      padding: 5px 8px;
+      font: 700 11px/1 var(--sans);
+    }
+
+    .copy-code:hover {
+      color: var(--ink);
+      border-color: rgba(45, 212, 191, .45);
+    }
+
+    .timeline {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      padding-left: 62px;
+      min-height: 86px;
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step, decimal-leading-zero);
+      position: absolute;
+      left: 16px;
+      top: 17px;
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(45, 212, 191, .48);
+      border-radius: 50%;
+      color: var(--teal);
+      font: 800 12px/1 var(--mono);
+      background: rgba(45, 212, 191, .08);
+    }
+
+    .callout-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 11px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .checklist li {
+      display: grid;
+      grid-template-columns: 26px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      color: #d4e4e8;
+    }
+
+    .check {
+      width: 22px;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(71, 226, 143, .52);
+      border-radius: 50%;
+      color: var(--green);
+      font: 900 13px/1 var(--sans);
+    }
+
+    .footer {
+      border-top: 1px solid rgba(255, 255, 255, .08);
+      padding: 30px 0 46px;
+      color: var(--dim);
+      text-align: center;
+      font-size: 13px;
+    }
+
+    @media (max-width: 980px) {
+      .nav {
+        min-height: 58px;
+      }
+
+      .brand-text {
+        display: none;
+      }
+
+      .hero {
+        min-height: 76svh;
+        padding-top: 104px;
+      }
+
+      .hero-metrics,
+      .grid.three,
+      .grid.two,
+      .callout-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .page {
+        display: block;
+        padding-top: 26px;
+      }
+
+      .side {
+        position: static;
+        margin-bottom: 24px;
+      }
+
+      .toc {
+        display: none;
+      }
+
+      .routing-map {
+        grid-template-columns: 1fr;
+      }
+
+      .arrow {
+        width: 1px;
+        height: 30px;
+        justify-self: center;
+        background: linear-gradient(180deg, transparent, var(--teal));
+      }
+
+      .arrow::after {
+        right: -4px;
+        top: auto;
+        bottom: 0;
+        transform: rotate(135deg);
+      }
+    }
+
+    @media (max-width: 620px) {
+      .nav {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .nav-links a {
+        padding: 6px 9px;
+      }
+
+      .hero {
+        min-height: 82svh;
+      }
+
+      .hero-inner,
+      .page {
+        width: min(100% - 22px, 1180px);
+      }
+
+      .hero-actions {
+        display: grid;
+      }
+
+      .button {
+        width: 100%;
+      }
+
+      .hero-metrics {
+        gap: 9px;
+      }
+
+      .metric {
+        min-height: auto;
+      }
+
+      .article-section {
+        padding: 22px 16px;
+      }
+
+      table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+      }
+
+      pre code {
+        font-size: 12px;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+        color: #111827;
+      }
+
+      .topbar,
+      .progress,
+      .side,
+      .hero-actions,
+      .copy-code {
+        display: none;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 32px 0;
+        color: #111827;
+      }
+
+      .hero::before,
+      .hero::after,
+      .hero-media {
+        display: none;
+      }
+
+      .page,
+      .hero-inner {
+        width: auto;
+        display: block;
+      }
+
+      .article-section {
+        page-break-inside: avoid;
+        box-shadow: none;
+        background: white;
+        color: #111827;
+      }
+    }
+  </style>
 </head>
 <body>
-    <!-- Header & Navigation -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">
-                    <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                    <div class="logo-text">Code<span>Flow</span></div>
-                </div>
-                
-                <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#benefits">Benefits</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
-                    <li><a href="#pricing">Pricing</a></li>
-                    <li><a href="#">Resources</a></li>
-                </ul>
-                
-                <button class="cta-button">Start Free Trial</button>
-                <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
-            </nav>
-        </div>
-    </header>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1>Build Apps Faster With <span>Visual Development</span></h1>
-                    <p>CodeFlow empowers teams to create enterprise-grade applications with minimal coding. Drag, drop, and connect components to build powerful web and mobile apps in record time.</p>
-                    <div class="hero-buttons">
-                        <button class="cta-button">Start Building Free</button>
-                        <button class="secondary-button">Watch Demo</button>
-                    </div>
-                </div>
-                <div class="hero-image">
-                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="CodeFlow Platform Interface">
-                </div>
-            </div>
-        </div>
-    </section>
+  <header class="topbar">
+    <nav class="nav" aria-label="页面导航">
+      <a class="brand" href="#top" aria-label="返回顶部">
+        <span class="brand-mark">ssh</span>
+        <span class="brand-text">Identity Routing</span>
+      </a>
+      <div class="nav-links">
+        <a href="#principles">核心原则</a>
+        <a href="#windows">Windows</a>
+        <a href="#macos">macOS</a>
+        <a href="#linux">Linux</a>
+        <a href="#daily">日常使用</a>
+        <a href="#troubleshooting">排错</a>
+      </div>
+    </nav>
+  </header>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Powerful Features for Rapid Development</h2>
-                <p>CodeFlow provides all the tools you need to build, deploy, and scale applications without writing extensive code.</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-th-large"></i>
-                    </div>
-                    <h3>Visual Builder</h3>
-                    <p>Drag and drop UI components to design responsive interfaces. Connect data sources with simple point-and-click actions.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3>Database Integration</h3>
-                    <p>Connect to any data source with built-in connectors. Automatically generate CRUD operations without writing SQL.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <h3>Cross-Platform</h3>
-                    <p>Build once, deploy everywhere. Generate applications for web, iOS, and Android from a single visual design.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-code"></i>
-                    </div>
-                    <h3>Extensible with Code</h3>
-                    <p>Add custom functionality with JavaScript when needed. Our platform doesn't limit your creativity or complexity.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Enterprise Security</h3>
-                    <p>Built-in authentication, authorization, and data encryption. SOC2 compliant with enterprise-grade security features.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-rocket"></i>
-                    </div>
-                    <h3>One-Click Deployment</h3>
-                    <p>Deploy to cloud or on-premises with a single click. Automatic scaling and monitoring included.</p>
-                </div>
-            </div>
+  <section class="hero" id="top">
+    <img class="hero-media" src="assets/ssh-routing-hero.png" alt="展示 SSH 密钥、多账号身份节点和仓库分支的科技风插画">
+    <div class="hero-inner">
+      <div>
+        <p class="kicker">
+          <span>GitHub SSH 多账号</span>
+          <span>Windows / macOS / Linux</span>
+          <span>更新于 2026-05-26</span>
+        </p>
+        <h1>让每个仓库都走对身份</h1>
+        <p class="hero-lead">一台电脑同时维护个人、公司、客户账号时，真正稳定的方案不是反复切凭据，而是把 SSH 密钥、Host 别名、remote URL 和 Git 提交身份拆成清晰的路由层。</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#principles">开始配置</a>
+          <button class="button" type="button" id="copyChecklist">复制最小清单</button>
         </div>
-    </section>
-
-    <!-- Benefits Section -->
-    <section class="benefits" id="benefits">
-        <div class="container">
-            <div class="section-title">
-                <h2>Why Choose CodeFlow?</h2>
-                <p>Join thousands of companies accelerating their digital transformation with low-code development.</p>
-            </div>
-            
-            <div class="benefits-grid">
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>10x Faster Development</h3>
-                    <p>Build applications in days instead of months with visual development tools.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-money-bill-wave"></i>
-                    </div>
-                    <h3>Reduce Costs by 70%</h3>
-                    <p>Lower development and maintenance costs with fewer resources required.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Citizen Developers</h3>
-                    <p>Enable business users to build solutions with minimal IT assistance.</p>
-                </div>
-                
-                <div class="benefit-item">
-                    <div class="benefit-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>Scale Effortlessly</h3>
-                    <p>From prototype to enterprise-scale applications with the same platform.</p>
-                </div>
-            </div>
+        <div class="hero-metrics" aria-label="核心方案摘要">
+          <div class="metric">
+            <strong>1:1</strong>
+            <span>每个 GitHub 账号对应一把独立 SSH 私钥</span>
+          </div>
+          <div class="metric">
+            <strong>Host</strong>
+            <span>用 <code>github-work</code> 这样的别名选择认证账号</span>
+          </div>
+          <div class="metric">
+            <strong>Repo</strong>
+            <span>每个仓库单独配置提交作者和邮箱</span>
+          </div>
         </div>
-    </section>
+      </div>
+      <div class="shell-strip" aria-label="核心 Git 克隆命令">
+        <div class="shell-head"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+        <pre class="shell-line">git clone git@github-work:OWNER/REPO.git
+git config user.email "work@example.com"
+ssh -T git@github-work</pre>
+      </div>
+    </div>
+  </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Trusted by Industry Leaders</h2>
-                <p>See what our customers have to say about their experience with CodeFlow.</p>
+  <div class="page">
+    <aside class="side">
+      <nav class="toc" aria-label="文章目录">
+        <p class="toc-title">Read Path</p>
+        <a href="#principles">01 核心原则</a>
+        <a href="#naming">02 命名规范</a>
+        <a href="#windows">03 Windows 配置</a>
+        <a href="#macos">04 macOS 配置</a>
+        <a href="#linux">05 Linux 配置</a>
+        <a href="#daily">06 克隆与提交</a>
+        <a href="#includeif">07 自动切换身份</a>
+        <a href="#troubleshooting">08 常见问题排查</a>
+        <a href="#checklist">09 最小可用清单</a>
+      </nav>
+      <div class="quick-copy">
+        <p class="copy-title">Mental Model</p>
+        <p>认证账号看 remote URL 里的 Host 别名；提交作者看仓库里的 <code>user.name</code> 和 <code>user.email</code>。</p>
+        <a class="button" href="#checklist">查看清单</a>
+      </div>
+    </aside>
+
+    <main>
+      <section class="article-section" id="principles">
+        <span class="section-label">01 / Strategy</span>
+        <h2>核心原则：把身份问题拆成五层</h2>
+        <p class="lead">多账号的关键不是“GitHub 账号切换”，而是让每次 SSH 连接都有明确入口，让每次 Git 提交都有明确作者。</p>
+
+        <div class="routing" aria-label="身份路由图">
+          <div class="routing-top">
+            <span>SSH Identity Pipeline</span>
+            <span>Keypair -> Host Alias -> Remote URL -> Repository Identity</span>
+          </div>
+          <div class="routing-map">
+            <div class="node">
+              <span class="tag">keypair</span>
+              <strong>独立私钥</strong>
+              <code>id_ed25519_github_work</code>
             </div>
-            
-            <div class="testimonial-slider">
-                <div class="testimonial">
-                    <div class="testimonial-text">
-                        "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions."
-                    </div>
-                    <div class="testimonial-author">
-                        <div class="author-avatar">SC</div>
-                        <div class="author-info">
-                            <h4>Sarah Chen</h4>
-                            <p>CTO, TechGrowth Inc.</p>
-                        </div>
-                    </div>
-                </div>
+            <div class="arrow" aria-hidden="true"></div>
+            <div class="node">
+              <span class="tag">ssh config</span>
+              <strong>Host 别名</strong>
+              <code>github-work</code>
             </div>
+            <div class="arrow" aria-hidden="true"></div>
+            <div class="node">
+              <span class="tag">git remote</span>
+              <strong>仓库地址</strong>
+              <code>git@github-work:OWNER/REPO.git</code>
+            </div>
+          </div>
         </div>
-    </section>
 
-    <!-- Pricing Section -->
-    <section class="pricing" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that fits your needs. All plans include core features with no hidden fees.</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card">
-                    <h3 class="plan-name">Starter</h3>
-                    <div class="plan-price">$29<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>Up to 5 users</li>
-                        <li>10 GB storage</li>
-                        <li>Basic components</li>
-                        <li>Community support</li>
-                        <li>1 production app</li>
-                    </ul>
-                    <button class="secondary-button">Get Started</button>
-                </div>
-                
-                <div class="pricing-card featured">
-                    <div class="featured-badge">Most Popular</div>
-                    <h3 class="plan-name">Professional</h3>
-                    <div class="plan-price">$89<span>/month</span></div>
-                    <ul class="plan-features">
-                        <li>Up to 25 users</li>
-                        <li>100 GB storage</li>
-                        <li>All components</li>
-                        <li>Priority support</li>
-                        <li>10 production apps</li>
-                        <li>Custom branding</li>
-                    </ul>
-                    <button class="cta-button">Try Free for 14 Days</button>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3 class="plan-name">Enterprise</h3>
-                    <div class="plan-price">Custom</div>
-                    <ul class="plan-features">
-                        <li>Unlimited users</li>
-                        <li>Unlimited storage</li>
-                        <li>All features included</li>
-                        <li>24/7 dedicated support</li>
-                        <li>Unlimited apps</li>
-                        <li>On-premises option</li>
-                    </ul>
-                    <button class="secondary-button">Contact Sales</button>
-                </div>
-            </div>
+        <div class="grid three">
+          <div class="principle">
+            <b>只用 SSH</b>
+            <span>多账号场景里不要混用 HTTPS 凭据，否则凭据缓存会让排错变得混乱。</span>
+          </div>
+          <div class="principle">
+            <b>每号一密钥</b>
+            <span>GitHub 不允许同一把公钥绑定多个账号，独立密钥也是最清晰的隔离边界。</span>
+          </div>
+          <div class="principle">
+            <b>Host 显式选择账号</b>
+            <span>用 <code>github-personal</code>、<code>github-work</code>、<code>github-client</code> 指向同一个 <code>github.com</code>。</span>
+          </div>
+          <div class="principle">
+            <b>remote URL 决定认证身份</b>
+            <span>还写 <code>git@github.com:...</code> 就会走默认账号；写别名才会走对应密钥。</span>
+          </div>
+          <div class="principle">
+            <b>Git 作者单独配置</b>
+            <span>SSH 只解决登录是谁，提交记录里的作者邮箱要靠仓库级 <code>git config</code>。</span>
+          </div>
+          <div class="principle">
+            <b>启用 IdentitiesOnly</b>
+            <span>让 SSH 只尝试你指定的那把钥匙，减少 agent 里多把 key 时选错的概率。</span>
+          </div>
         </div>
-    </section>
+      </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2>Start Building Today</h2>
-            <p>Join over 10,000 companies that use CodeFlow to accelerate their application development. No credit card required for the free trial.</p>
-            <button class="cta-button">Get Started for Free</button>
+      <section class="article-section" id="naming">
+        <span class="section-label">02 / Naming</span>
+        <h2>命名先定好，后面就不乱</h2>
+        <p class="lead">推荐把“账号用途”写进私钥名和 Host 名。命名越朴素，长期维护越稳定。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>用途</th>
+              <th>私钥文件</th>
+              <th>SSH Host</th>
+              <th>克隆地址形态</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>个人账号</td>
+              <td><code>id_ed25519_github_personal</code></td>
+              <td><code>github-personal</code></td>
+              <td><code>git@github-personal:OWNER/REPO.git</code></td>
+            </tr>
+            <tr>
+              <td>工作账号</td>
+              <td><code>id_ed25519_github_work</code></td>
+              <td><code>github-work</code></td>
+              <td><code>git@github-work:OWNER/REPO.git</code></td>
+            </tr>
+            <tr>
+              <td>客户账号</td>
+              <td><code>id_ed25519_github_client</code></td>
+              <td><code>github-client</code></td>
+              <td><code>git@github-client:OWNER/REPO.git</code></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="note">
+          <p>示例邮箱请替换为对应 GitHub 账号邮箱。真实私钥口令不要写进脚本、笔记、教程或仓库，建议放进密码管理器。</p>
         </div>
-    </section>
+      </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="logo">
-                        <div class="logo-icon"><i class="fas fa-bezier-curve"></i></div>
-                        <div class="logo-text">Code<span>Flow</span></div>
-                    </div>
-                    <p style="margin-top: 20px; color: #aaa;">The leading visual development platform for building enterprise applications with minimal coding.</p>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Product</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Features</a></li>
-                        <li><a href="#">Pricing</a></li>
-                        <li><a href="#">Use Cases</a></li>
-                        <li><a href="#">Integrations</a></li>
-                        <li><a href="#">Roadmap</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Resources</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Community</a></li>
-                        <li><a href="#">Support</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul class="footer-links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Contact</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 CodeFlow. All rights reserved.</p>
-            </div>
+      <section class="article-section" id="windows">
+        <span class="section-label">03 / Windows</span>
+        <h2>Windows：用 PowerShell 建立多账号 SSH 路由</h2>
+        <p class="lead">Windows 默认建议把密钥放在当前用户的 <code>.ssh</code> 目录。自定义目录也可以，但要把 <code>IdentityFile</code> 和权限一起处理好。</p>
+
+        <div class="timeline">
+          <div class="step">
+            <b>检查现有密钥</b>
+            <span>已有 <code>id_ed25519</code> 不要急着删，给新账号生成新密钥即可。</span>
+          </div>
+          <div class="step">
+            <b>每个账号生成独立密钥</b>
+            <span><code>-f</code> 后面写私钥文件路径，不需要加 <code>.pub</code>。</span>
+          </div>
+          <div class="step">
+            <b>启动 ssh-agent 并加载密钥</b>
+            <span>agent 负责记住私钥口令，避免每次 push 都重复输入。</span>
+          </div>
+          <div class="step">
+            <b>配置 Host 别名并验证账号</b>
+            <span><code>ssh -T</code> 返回的 USERNAME 必须是你期望的账号。</span>
+          </div>
         </div>
-    </footer>
 
-    <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
-            const navLinks = document.querySelector('.nav-links');
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            
-            // Adjust for mobile
-            if (window.innerWidth <= 768) {
-                if (navLinks.style.display === 'flex') {
-                    navLinks.style.flexDirection = 'column';
-                    navLinks.style.position = 'absolute';
-                    navLinks.style.top = '80px';
-                    navLinks.style.left = '0';
-                    navLinks.style.width = '100%';
-                    navLinks.style.backgroundColor = 'white';
-                    navLinks.style.padding = '20px';
-                    navLinks.style.boxShadow = '0 10px 20px rgba(0,0,0,0.1)';
-                    
-                    const navItems = document.querySelectorAll('.nav-links li');
-                    navItems.forEach(item => {
-                        item.style.margin = '10px 0';
-                    });
-                }
-            }
+        <h3>生成密钥</h3>
+        <pre data-lang="powershell"><code>Get-ChildItem "$env:USERPROFILE\.ssh"
+New-Item -ItemType Directory -Force "$env:USERPROFILE\.ssh"
+
+ssh-keygen -t ed25519 -C "personal@example.com" -f "$env:USERPROFILE\.ssh\id_ed25519_github_personal"
+ssh-keygen -t ed25519 -C "work@example.com"     -f "$env:USERPROFILE\.ssh\id_ed25519_github_work"</code></pre>
+
+        <p>如果你希望放在自定义目录，例如 <code>D:\git-ssh</code>：</p>
+        <pre data-lang="powershell"><code>New-Item -ItemType Directory -Force "D:\git-ssh"
+
+ssh-keygen -t ed25519 -C "personal@example.com" -f "D:\git-ssh\id_ed25519_github_personal"
+ssh-keygen -t ed25519 -C "work@example.com"     -f "D:\git-ssh\id_ed25519_github_work"</code></pre>
+
+        <h3>启动 agent，复制公钥</h3>
+        <pre data-lang="powershell"><code>Get-Service ssh-agent | Set-Service -StartupType Automatic
+Start-Service ssh-agent
+
+ssh-add "$env:USERPROFILE\.ssh\id_ed25519_github_personal"
+ssh-add "$env:USERPROFILE\.ssh\id_ed25519_github_work"
+ssh-add -l
+
+Get-Content "$env:USERPROFILE\.ssh\id_ed25519_github_work.pub" | Set-Clipboard</code></pre>
+
+        <p>然后进入对应 GitHub 账号：<code>Settings</code> -> <code>SSH and GPG keys</code> -> <code>New SSH key</code>。每个账号各贴自己的公钥。</p>
+
+        <h3>写入 SSH config</h3>
+        <pre data-lang="powershell"><code>New-Item -ItemType Directory -Force "$env:USERPROFILE\.ssh"
+New-Item -ItemType File -Force "$env:USERPROFILE\.ssh\config"
+notepad "$env:USERPROFILE\.ssh\config"</code></pre>
+
+        <pre data-lang="sshconfig"><code>Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_personal
+    IdentitiesOnly yes
+
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_work
+    IdentitiesOnly yes</code></pre>
+
+        <p>自定义目录时，Windows 的 SSH config 建议使用正斜杠：</p>
+        <pre data-lang="sshconfig"><code>Host github-work
+    HostName github.com
+    User git
+    IdentityFile D:/git-ssh/id_ed25519_github_work
+    IdentitiesOnly yes</code></pre>
+
+        <h3>验证账号</h3>
+        <pre data-lang="powershell"><code>ssh -T git@github-personal
+ssh -T git@github-work</code></pre>
+        <p>成功时会看到类似 <code>Hi USERNAME! You've successfully authenticated, but GitHub does not provide shell access.</code>。确认每个 Host 显示的是预期账号。</p>
+      </section>
+
+      <section class="article-section" id="macos">
+        <span class="section-label">04 / macOS</span>
+        <h2>macOS：把密钥交给钥匙串</h2>
+        <p class="lead">macOS 的重点是 <code>AddKeysToAgent yes</code> 和 <code>UseKeychain yes</code>，让系统钥匙串保存私钥口令。</p>
+
+        <h3>生成密钥</h3>
+        <pre data-lang="bash"><code>mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+ssh-keygen -t ed25519 -C "personal@example.com" -f ~/.ssh/id_ed25519_github_personal
+ssh-keygen -t ed25519 -C "work@example.com"     -f ~/.ssh/id_ed25519_github_work</code></pre>
+
+        <p>如果想放在 <code>~/git-ssh</code>：</p>
+        <pre data-lang="bash"><code>mkdir -p ~/git-ssh
+chmod 700 ~/git-ssh
+
+ssh-keygen -t ed25519 -C "personal@example.com" -f ~/git-ssh/id_ed25519_github_personal
+ssh-keygen -t ed25519 -C "work@example.com"     -f ~/git-ssh/id_ed25519_github_work</code></pre>
+
+        <h3>保存口令并复制公钥</h3>
+        <pre data-lang="bash"><code>eval "$(ssh-agent -s)"
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github_personal
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519_github_work
+ssh-add -l
+
+pbcopy &lt; ~/.ssh/id_ed25519_github_work.pub</code></pre>
+
+        <p>旧系统如果不支持 <code>--apple-use-keychain</code>，可以尝试 <code>ssh-add -K ~/.ssh/id_ed25519_github_work</code>。</p>
+
+        <h3>推荐 config</h3>
+        <pre data-lang="bash"><code>test -f ~/.ssh/config &amp;&amp; echo "config exists" || echo "config missing"
+touch ~/.ssh/config
+chmod 600 ~/.ssh/config
+nano ~/.ssh/config</code></pre>
+
+        <pre data-lang="sshconfig"><code>Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_personal
+    IdentitiesOnly yes
+    AddKeysToAgent yes
+    UseKeychain yes
+
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_work
+    IdentitiesOnly yes
+    AddKeysToAgent yes
+    UseKeychain yes</code></pre>
+
+        <pre data-lang="bash"><code>chmod 600 ~/.ssh/config
+chmod 600 ~/.ssh/id_ed25519_github_*
+chmod 644 ~/.ssh/*.pub
+
+ssh -T git@github-personal
+ssh -T git@github-work</code></pre>
+      </section>
+
+      <section class="article-section" id="linux">
+        <span class="section-label">05 / Linux</span>
+        <h2>Linux：权限是稳定性的底线</h2>
+        <p class="lead">Linux 路线和 macOS 接近，但更要注意 <code>~/.ssh</code>、私钥和 config 的权限。</p>
+
+        <h3>生成密钥并添加到 agent</h3>
+        <pre data-lang="bash"><code>mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+ssh-keygen -t ed25519 -C "personal@example.com" -f ~/.ssh/id_ed25519_github_personal
+ssh-keygen -t ed25519 -C "work@example.com"     -f ~/.ssh/id_ed25519_github_work
+
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_github_personal
+ssh-add ~/.ssh/id_ed25519_github_work
+ssh-add -l</code></pre>
+
+        <p>自定义目录示例：</p>
+        <pre data-lang="bash"><code>mkdir -p /data/git-ssh
+chmod 700 /data/git-ssh
+
+ssh-keygen -t ed25519 -C "work@example.com" -f /data/git-ssh/id_ed25519_github_work
+ssh-add /data/git-ssh/id_ed25519_github_work</code></pre>
+
+        <h3>复制公钥和配置 Host</h3>
+        <pre data-lang="bash"><code>xclip -selection clipboard &lt; ~/.ssh/id_ed25519_github_work.pub
+# Wayland:
+wl-copy &lt; ~/.ssh/id_ed25519_github_work.pub
+# 没有剪贴板工具:
+cat ~/.ssh/id_ed25519_github_work.pub</code></pre>
+
+        <pre data-lang="sshconfig"><code>Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_personal
+    IdentitiesOnly yes
+    AddKeysToAgent yes
+
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_work
+    IdentitiesOnly yes
+    AddKeysToAgent yes</code></pre>
+
+        <pre data-lang="bash"><code>chmod 700 ~/.ssh
+chmod 600 ~/.ssh/config
+chmod 600 ~/.ssh/id_ed25519_github_*
+chmod 644 ~/.ssh/*.pub
+
+ssh -T git@github-personal
+ssh -T git@github-work</code></pre>
+      </section>
+
+      <section class="article-section" id="daily">
+        <span class="section-label">06 / Daily Flow</span>
+        <h2>日常使用：看 remote，也看提交邮箱</h2>
+        <p class="lead">认证账号和提交作者是两套系统。推送失败时检查 SSH；提交身份不对时检查 Git config。</p>
+
+        <div class="grid two">
+          <div class="mini-card">
+            <b>用指定账号克隆</b>
+            <span>冒号前面的主机名必须是 <code>~/.ssh/config</code> 里的 Host 别名。</span>
+          </div>
+          <div class="mini-card">
+            <b>仓库内设置作者</b>
+            <span>不要只依赖全局邮箱。工作仓库、客户仓库建议分别配置。</span>
+          </div>
+        </div>
+
+        <pre data-lang="bash"><code># 个人账号
+git clone git@github-personal:OWNER/REPO.git
+
+# 工作账号
+git clone git@github-work:OWNER/REPO.git</code></pre>
+
+        <pre data-lang="bash"><code>git config user.name "Your Name"
+git config user.email "work@example.com"
+
+git config --get user.name
+git config --get user.email</code></pre>
+
+        <h3>已有仓库改用另一个账号</h3>
+        <pre data-lang="bash"><code>git remote -v
+git remote set-url origin git@github-work:OWNER/REPO.git
+git fetch</code></pre>
+
+        <h3>确认当前仓库到底连到哪里</h3>
+        <pre data-lang="bash"><code>git remote -v
+ssh -T git@github-work
+git config --show-origin --get user.email</code></pre>
+      </section>
+
+      <section class="article-section" id="includeif">
+        <span class="section-label">07 / Git includeIf</span>
+        <h2>可选增强：按目录自动切换提交身份</h2>
+        <p class="lead">如果个人项目和工作项目固定放在不同目录，可以让 Git 根据路径自动加载不同的作者信息。</p>
+
+        <pre data-lang="gitconfig"><code>[user]
+    name = Personal Name
+    email = personal@example.com
+
+[includeIf "gitdir:~/code/work/"]
+    path = ~/.gitconfig-work</code></pre>
+
+        <pre data-lang="gitconfig"><code>[user]
+    name = Work Name
+    email = work@example.com</code></pre>
+
+        <p>Windows 也可以使用类似写法，路径建议用正斜杠：</p>
+        <pre data-lang="gitconfig"><code>[includeIf "gitdir:C:/Users/YourName/code/work/"]
+    path = C:/Users/YourName/.gitconfig-work</code></pre>
+
+        <div class="note">
+          <p><code>includeIf</code> 只负责提交作者身份，不负责 SSH 认证。SSH 认证仍然由 remote URL 里的 Host 别名决定。</p>
+        </div>
+      </section>
+
+      <section class="article-section" id="more-accounts">
+        <span class="section-label">08 / Scale</span>
+        <h2>第三个账号、自建 Git 服务，也是一套逻辑</h2>
+        <p class="lead">新增账号时重复三件事：生成新私钥，把公钥加到对应账号，在 SSH config 新增 Host。</p>
+
+        <pre data-lang="sshconfig"><code>Host github-client
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_client
+    IdentitiesOnly yes</code></pre>
+
+        <pre data-lang="bash"><code>git clone git@github-client:OWNER/REPO.git</code></pre>
+
+        <p>如果使用公司或客户自建 Git 服务，<code>Host</code> 是本机别名，<code>HostName</code> 才是真实服务器域名。</p>
+        <pre data-lang="sshconfig"><code>Host client-git
+    HostName ssh.example-git.net
+    User git
+    IdentityFile ~/.ssh/id_ed25519_client_git
+    IdentitiesOnly yes</code></pre>
+      </section>
+
+      <section class="article-section" id="troubleshooting">
+        <span class="section-label">09 / Debug Matrix</span>
+        <h2>常见问题排查：先定位是哪一层错了</h2>
+        <p class="lead">不要从头重配。先看错误信息，再判断是仓库路径、账号权限、密钥加载、Host 别名还是提交身份。</p>
+
+        <div class="callout-grid">
+          <div class="trouble">
+            <b>Repository not found</b>
+            <span>检查 <code>OWNER/REPO</code> 是否正确、私有仓库是否授权、remote 是否误用 <code>github.com</code>。</span>
+          </div>
+          <div class="trouble">
+            <b>Permission denied (publickey)</b>
+            <span>检查 <code>ssh-add -l</code>、公钥是否贴到正确账号、<code>IdentityFile</code> 路径是否存在。</span>
+          </div>
+          <div class="trouble">
+            <b>仍然使用旧账号</b>
+            <span>大概率 remote URL 还是 <code>git@github.com:OWNER/REPO.git</code>，改成 Host 别名。</span>
+          </div>
+          <div class="trouble">
+            <b>每次都要输入口令</b>
+            <span>Windows 看 <code>ssh-agent</code>，macOS 看钥匙串，Linux 看当前 shell 是否有 agent。</span>
+          </div>
+        </div>
+
+        <pre data-lang="bash"><code>ssh-add -l
+ssh -vT git@github-work
+git remote -v
+git config --show-origin --get user.email</code></pre>
+
+        <h3>Windows 私钥权限过宽</h3>
+        <p>如果看到 <code>UNPROTECTED PRIVATE KEY FILE</code>、<code>Bad permissions</code>，说明私钥文件继承了过宽 ACL，OpenSSH 会忽略它。</p>
+
+        <pre data-lang="powershell"><code>$key = "E:\codeIDE\github-ssh-id_ed25519\id_ed25519_juice520"
+icacls $key</code></pre>
+
+        <p>如果出现 <code>NT AUTHORITY\Authenticated Users</code>、<code>BUILTIN\Users</code>、<code>Everyone</code>，可以收紧权限：</p>
+
+        <pre data-lang="powershell"><code>$key = "E:\codeIDE\github-ssh-id_ed25519\id_ed25519_juice520"
+$me = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+
+takeown /F $key
+icacls $key /inheritance:r
+icacls $key /remove:g "NT AUTHORITY\Authenticated Users" "BUILTIN\Users" "Everyone"
+icacls $key /grant:r "$($me):(R)"
+icacls $key
+
+ssh-add "E:\codeIDE\github-ssh-id_ed25519\id_ed25519_juice520"</code></pre>
+
+        <p>如果目录本身也继承了过宽权限，把目录一起收紧：</p>
+        <pre data-lang="powershell"><code>$dir = "E:\codeIDE\github-ssh-id_ed25519"
+$me = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+
+icacls $dir /inheritance:r
+icacls $dir /remove:g "NT AUTHORITY\Authenticated Users" "BUILTIN\Users" "Everyone"
+icacls $dir /grant:r "$($me):(OI)(CI)(F)"</code></pre>
+      </section>
+
+      <section class="article-section" id="checklist">
+        <span class="section-label">10 / Final Check</span>
+        <h2>最小可用清单</h2>
+        <p class="lead">做到下面六点，多账号长期并存就会非常稳定。</p>
+        <ul class="checklist" id="minimumChecklist">
+          <li><span class="check">✓</span><span>每个账号有独立私钥，例如 <code>~/.ssh/id_ed25519_github_work</code>。</span></li>
+          <li><span class="check">✓</span><span>GitHub 对应账号里添加了这把私钥的 <code>.pub</code> 公钥。</span></li>
+          <li><span class="check">✓</span><span><code>~/.ssh/config</code> 有独立 Host，例如 <code>github-work</code>。</span></li>
+          <li><span class="check">✓</span><span><code>ssh -T git@github-work</code> 显示正确 GitHub 用户名。</span></li>
+          <li><span class="check">✓</span><span>仓库 remote 使用 <code>git@github-work:OWNER/REPO.git</code>。</span></li>
+          <li><span class="check">✓</span><span>仓库内 <code>git config user.email</code> 是该账号希望展示的提交邮箱。</span></li>
+        </ul>
+      </section>
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>重构为单页技术博客：GitHub 多账号 SSH Identity Routing Guide</p>
+  </footer>
+
+  <script>
+    const progressBar = document.getElementById("progressBar");
+    const navLinks = Array.from(document.querySelectorAll(".nav-links a, .toc a"));
+    const sections = navLinks
+      .map((link) => document.querySelector(link.getAttribute("href")))
+      .filter(Boolean);
+
+    function updateProgress() {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const percent = maxScroll > 0 ? (scrollTop / maxScroll) * 100 : 0;
+      progressBar.style.width = `${Math.min(100, Math.max(0, percent))}%`;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = `#${entry.target.id}`;
+        navLinks.forEach((link) => {
+          link.classList.toggle("active", link.getAttribute("href") === id);
         });
-        
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Close mobile menu if open
-                    if(window.innerWidth <= 768) {
-                        document.querySelector('.nav-links').style.display = 'none';
-                    }
-                }
-            });
-        });
-        
-        // Simple testimonial slider
-        const testimonials = [
-            {
-                text: "CodeFlow transformed how we deliver solutions to our business units. What used to take 6 months now takes 3 weeks. Our development team can focus on complex problems while business teams build their own solutions.",
-                name: "Sarah Chen",
-                position: "CTO, TechGrowth Inc.",
-                initials: "SC"
-            },
-            {
-                text: "We reduced our app development time by 80% using CodeFlow. The visual interface made it easy for our analysts to build data dashboards without waiting for IT resources.",
-                name: "Marcus Johnson",
-                position: "Director of Operations, DataCorp",
-                initials: "MJ"
-            },
-            {
-                text: "As a non-technical founder, CodeFlow allowed me to build our MVP in just 2 months. I could test ideas quickly and iterate based on user feedback without deep coding knowledge.",
-                name: "Lisa Wang",
-                position: "Founder, StartupLabs",
-                initials: "LW"
-            }
-        ];
-        
-        let currentTestimonial = 0;
-        const testimonialElement = document.querySelector('.testimonial');
-        
-        function rotateTestimonial() {
-            currentTestimonial = (currentTestimonial + 1) % testimonials.length;
-            updateTestimonial();
+      });
+    }, { rootMargin: "-24% 0px -62% 0px", threshold: 0.01 });
+
+    sections.forEach((section) => observer.observe(section));
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    updateProgress();
+
+    document.querySelectorAll("pre").forEach((pre) => {
+      if (pre.classList.contains("shell-line")) return;
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "copy-code";
+      button.textContent = "复制";
+      button.addEventListener("click", async () => {
+        const code = pre.querySelector("code")?.innerText || "";
+        try {
+          await navigator.clipboard.writeText(code);
+          button.textContent = "已复制";
+          setTimeout(() => { button.textContent = "复制"; }, 1300);
+        } catch {
+          button.textContent = "复制失败";
+          setTimeout(() => { button.textContent = "复制"; }, 1300);
         }
-        
-        function updateTestimonial() {
-            const testimonial = testimonials[currentTestimonial];
-            testimonialElement.innerHTML = `
-                <div class="testimonial-text">"${testimonial.text}"</div>
-                <div class="testimonial-author">
-                    <div class="author-avatar">${testimonial.initials}</div>
-                    <div class="author-info">
-                        <h4>${testimonial.name}</h4>
-                        <p>${testimonial.position}</p>
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Auto-rotate testimonials every 5 seconds
-        setInterval(rotateTestimonial, 5000);
-        
-        // CTA button interactions
-        document.querySelectorAll('.cta-button').forEach(button => {
-            button.addEventListener('click', function() {
-                alert('Thank you for your interest in CodeFlow! You would be redirected to the signup page in a real implementation.');
-            });
-        });
-        
-        // Pricing card interactions
-        document.querySelectorAll('.pricing-card button').forEach(button => {
-            button.addEventListener('click', function() {
-                const planName = this.closest('.pricing-card').querySelector('.plan-name').textContent;
-                alert(`You selected the ${planName} plan. In a real implementation, you would be redirected to the checkout process.`);
-            });
-        });
-    </script>
+      });
+      pre.appendChild(button);
+    });
+
+    document.getElementById("copyChecklist").addEventListener("click", async () => {
+      const checklist = [
+        "每个账号有独立私钥，例如 ~/.ssh/id_ed25519_github_work",
+        "GitHub 对应账号里添加了这把私钥的 .pub 公钥",
+        "~/.ssh/config 有独立 Host，例如 github-work",
+        "ssh -T git@github-work 显示正确 GitHub 用户名",
+        "仓库 remote 使用 git@github-work:OWNER/REPO.git",
+        "仓库内 git config user.email 是该账号希望展示的提交邮箱"
+      ].map((item, index) => `${index + 1}. ${item}`).join("\n");
+
+      const button = document.getElementById("copyChecklist");
+      try {
+        await navigator.clipboard.writeText(checklist);
+        button.textContent = "清单已复制";
+      } catch {
+        button.textContent = "复制失败";
+      }
+      setTimeout(() => { button.textContent = "复制最小清单"; }, 1500);
+    });
+  </script>
 </body>
 </html>
